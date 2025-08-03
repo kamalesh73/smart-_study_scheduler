@@ -1,0 +1,33 @@
+body {
+  background-color: #F1FAEE;
+  color: #1D3557;
+  font-family: sans-serif;
+}
+
+.navbar {
+  background-color: #005F73;
+  color: #F1FAEE;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav-links a {
+  margin-left: 1rem;
+  color: #F1FAEE;
+  text-decoration: none;
+}
+
+.nav-links a:hover {
+  color: #0A9396;
+}
+
+.nav-icons img {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9999px;
+  border: 2px solid #EE9B00;
+}
+
+/* Add styling for other classes: section, schedule-cards, stat, add-button, up-next, progress-bar, etc */

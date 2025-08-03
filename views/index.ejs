@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Scheduler Dashboard</title>
+  <!-- Assuming you have a style.css file in your 'public' folder -->
+  <link rel="stylesheet" href="/style.css" />
+  <style>
+    /* Adding some basic styles here to make sure it's readable if style.css is missing */
+    body { font-family: sans-serif; background-color: #f0f2f5; margin: 0; }
+    .navbar, .section, .stats, .footer { max-width: 900px; margin: 20px auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    pre { white-space: pre-wrap; font-family: monospace; background: #fafafa; padding: 1em; border-radius: 4px; }
+    .logout-link { color: #e74c3c; text-decoration: none; font-weight: bold; }
+  </style>
+</head>
+<body>
+
+  <!-- 🧭 Navigation Bar -->
+  <nav class="navbar">
+    <h1>StudyHub</h1>
+    <div class="nav-links">
+        <!-- FIX: Added a logout link -->
+        <a href="/logout" class="logout-link">Logout</a>
+    </div>
+    <div class="nav-icons">
+      <span>🔔</span>
+      <span>⚙️</span>
+      <img src="/avatar.png" alt="Avatar" />
+    </div>
+  </nav>
+
+  <!-- 🌞 Greeting -->
+  <section class="section">
+    <!-- FIX: Added the user's name, which is passed from the server -->
+    <h2>Welcome <%= name %> 👋</h2>
+    
+    <!-- FIX: Display the 'schedule' as a single block of pre-formatted text -->
+    <!-- The <pre> tag respects the line breaks from the AI's response -->
+    <h3>Your Personalized Schedule</h3>
+    <pre><%= schedule %></pre>
+    
+    <!-- This button can link to your form to create a new schedule -->
+    <a href="/form" class="add-button">＋ New Schedule</a>
+  </section>
+
+  <!-- 📊 Quick Stats -->
+  <section class="stats">
+    <!-- OK: 'focusedTime' was correct -->
+    <div class="stat"><span>🔥</span><div><p>Today's Focused Time</p><p><%= focusedTime %></p></div></div>
+    
+    <!-- FIX: Changed 'streak' to 'streak_count' to match the server variable -->
+    <div class="stat"><span>🏆</span><div><p>Current Streak</p><p><%= streak_count %> days</p></div></div>
+
+    <!-- FIX: Added longest_streak, which is available from the server -->
+    <div class="stat"><span>📈</span><div><p>Longest Streak</p><p><%= longest_streak %> days</p></div></div>
+  </section>
+
+  <!-- ⏩ Upcoming Sessions (Conditional Display) -->
+  <!-- FIX: Added an 'if' check. This section will only show if 'upcoming' is not null -->
+  <% if (upcoming && upcoming.length > 0) { %>
+    <section class="section">
+      <div class="up-next">
+        <h3>Up Next</h3>
+        <ul>
+          <% upcoming.forEach(session => { %>
+            <li>
+              <span><%= session.time %> <%= session.subject %></span>
+              <div><button>Start</button><button>Skip</button></div>
+            </li>
+          <% }) %>
+        </ul>
+        <p><a href="#">View Full Schedule</a></p>
+      </div>
+    </section>
+  <% } %>
+
+  <!-- 👥 Groups Snapshot (Conditional Display) -->
+  <!-- FIX: Added an 'if' check. This section will only show if 'groups' is not null -->
+  <% if (groups && groups.length > 0) { %>
+    <section class="section">
+      <div class="groups">
+        <div class="groups-header">
+          <h3>Your Groups</h3>
+          <button>+ New Group</button>
+        </div>
+        <% groups.forEach(group => { %>
+          <div>
+            <div><span><%= group.name %></span><span><%= group.code %></span></div>
+            <div class="progress-bar">
+              <div style="width:<%= group.progress %>%"></div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </section>
+  <% } %>
+
+  <!-- 📈 Insights Footer -->
+  <footer class="footer">
+    <h3>Insights</h3>
+    <!-- FIX: Display 'insight' as a single string of text. -->
+    <!-- Removed the .tip and .quote properties that don't exist. -->
+    <div class="tips">
+      <p><%= insight %></p>
+    </div>
+  </footer>
+
+</body>
+</html>

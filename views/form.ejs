@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/form.css">
+</head>
+<body>
+  <form action="/form" method="POST">
+
+    <section class="form-card">
+  <h2>Customize Your Study Preferences</h2>
+
+  <!-- Goal Type -->
+  <div class="input-group">
+    <label for="goal">Goal Type</label>
+    <select id="goal" name="goal">
+      <option value="exam" name="goal">Exam Preparation</option>
+      <option value="skill" name="goal">Skill Building</option>
+      <option value="habit" name="goal">Habit Formation</option>
+    </select>
+  </div>
+   <!-- Subjects & Priority -->
+  <div class="input-group">
+    <label for="subjects">Subjects & Priority</label>
+    <textarea id="subjects" name="subjects" placeholder="e.g. Math: High, History: Medium"></textarea>
+  </div>
+  <!-- Study Methods -->
+  <div class="input-group">
+    <label for="methods">Preferred Study Methods</label>
+    <select id="methods" name="methods" multiple>
+      <option value="pomodoro">Pomodoro</option>
+      <option value="active-recall">Active Recall</option>
+      <option value="spaced-repetition">Spaced Repetition</option>
+      <option value="mind-map">Mind Mapping</option>
+      <option value="feynman">Feynman Technique</option>
+      <option value="note-review">Note-Based Review</option>
+    </select>
+  </div>
+
+  <!-- Deadline -->
+  <div class="input-group">
+    <label for="deadline">Deadline to Complete</label>
+    <input type="date" id="deadline" name="deadline" />
+  </div>
+
+  <!-- Previous Feedback -->
+  <div class="input-group">
+    <label for="remarks">Previous Subject Feedback</label>
+    <textarea id="remarks" name="remarks" placeholder="Mention struggles, achievements, etc."></textarea>
+  </div>
+
+  <!-- Time Available Per Day -->
+  <div class="input-group">
+    <label for="dailyTime">Time Available Per Day (in hours)</label>
+    <input type="number" id="dailyTime" name="dailyTime" min="1" max="24" />
+  </div>
+
+  <!-- Preferred Study Slot -->
+  <div class="input-group">
+    <label for="slots">Preferred Study Slot</label>
+    <select id="slots" name="slots">
+      <option value="morning">Morning</option>
+      <option value="afternoon">Afternoon</option>
+      <option value="night">Night</option>
+    </select>
+  </div>
+
+  <!-- Flexibility -->
+  <div class="input-group">
+    <label for="flexibility">Flexibility for Unexpected Breaks</label>
+    <select id="flexibility" name="flexibility">
+      <option value="low">Low</option>
+      <option value="medium">Medium</option>
+      <option value="high">High</option>
+    </select>
+  </div>
+
+ 
+
+  <button type="submit">Save Preferences</button>
+</section>
+  </form>
+</body>
+</html>
+
