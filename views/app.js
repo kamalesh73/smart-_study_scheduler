@@ -1,8 +1,5 @@
-// ======================================================
-// --- IMPORTS AND INITIAL SETUP ---
-// ======================================================
+
 import express from 'express';
-// CHANGE: We now import Pool instead of Client from 'pg'
 import { Pool } from 'pg';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
@@ -16,11 +13,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
-// ======================================================
-// --- DATABASE CONNECTION POOL ---
-// ======================================================
-// CHANGE: We now create a new Pool instance.
-// The Pool will manage multiple client connections automatically.
+
 const db = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -33,20 +26,13 @@ const db = new Pool({
 db.on('connect', () => {
     console.log('🟢 Database pool connected successfully.');
 });
-
-
-// ======================================================
-// --- MIDDLEWARE CONFIGURATION ---
-// ======================================================
 app.use(cookieParser());
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 
 
-// ======================================================
-// --- TOKEN VERIFICATION MIDDLEWARE ---
-// ======================================================
+
 const verifyToken = (req, res, next) => {
   const token = req.cookies.token;
   if (!token) return res.redirect('/');
@@ -61,9 +47,7 @@ const verifyToken = (req, res, next) => {
 };
 
 
-// =======================================================================
-// --- ROUTES (SSR WORKFLOW) ---
-// =======================================================================
+
 
 // --- GET Routes ---
 
@@ -105,8 +89,7 @@ app.get('/dashboard', verifyToken, async (req, res) => {
 // --- POST Routes ---
 
 app.post('/register', async (req, res) => {
-    // ... This route logic is fine and will work with the Pool.
-    // Full code provided below for completeness.
+   
     const { name, email, password } = req.body;
     console.log(`[POST /register] Attempting to register user: ${email}`);
     if (!name || !email || !password) return res.render('auth.ejs', { error: 'All fields are required.' });
@@ -127,8 +110,7 @@ app.post('/register', async (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-    // ... This route logic is fine and will work with the Pool.
-    // Full code provided below for completeness.
+    
     const { email, password } = req.body;
     console.log(`[POST /login] Attempting to log in user: ${email}`);
     if (!email || !password) return res.render('auth.ejs', { error: 'Email and password are required.' });
@@ -149,14 +131,13 @@ app.post("/login", async (req, res) => {
     }
 });
 
-// CHANGE: This route now correctly uses a client from the pool for its transaction.
 app.post("/form", verifyToken, async (req, res) => {
     // 1. "Check out" a client from the pool.
     const client = await db.connect();
     try {
         console.log(`[POST /form] Generating schedule for user ID: ${req.user.id}`);
         const { goal, subjects, methods, deadline, remarks, dailytime, slots, flexibility } = req.body;
-        const prompt = `Based on these study preferences, create a one-week schedule. The user has provided subjects with priorities. Your job is to schedule them. Preferences: Goal(${goal}), Subjects(${subjects}), Methods(${methods}), Deadline(${deadline}), Daily Time(${dailytime} hours), Slots(${slots}), Remarks(${remarks}). IMPORTANT: Respond with ONLY a valid JSON array of objects. Each object must have these keys: "dayOfWeek", "startTime", "endTime", "subject". The "subject" should come from user input. Example: [{"dayOfWeek": "Monday", "startTime": "09:00", "endTime": "11:00", "subject": "Math: Calculus Chapter 3"}]`;
+        const prompt = `Based on these study preferences, create a (${deadline})days schedule. The user has provided subjects with priorities. Your job is to schedule them. Preferences: Goal(${goal}), Subjects(${subjects}), Methods(${methods}), Deadline(${deadline}), Daily Time(${dailytime} hours), Slots(${slots}), Remarks(${remarks}). IMPORTANT: Respond with ONLY a valid JSON array of objects. Each object must have these keys: "dayOfWeek", "startTime", "endTime", "subject". The "subject" should come from user input. Example: [{"dayOfWeek": "Monday", "startTime": "09:00", "endTime": "11:00", "subject": "Math: Calculus Chapter 3"}]`;
 
         const result = await genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" }).generateContent(prompt);
         let jsonResponse = result.response.text().replace(/```json/g, '').replace(/```/g, '').trim();
@@ -192,9 +173,7 @@ app.get('/logout', (req, res) => {
 });
 
 
-// ======================================================
-// --- SERVER LISTENER ---
-// ======================================================
+
 app.listen(PORT, () => {
   console.log(`🟢 Server is running in SSR mode on http://localhost:${PORT}`);
 });
