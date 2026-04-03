@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="StudyHub Dashboard - Manage your personalized study schedule and track your progress">
+  <title>StudyHub Dashboard</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+</head>
+
+<body>
+  <!-- Navigation Header -->
+  <header>
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+      <h1>StudyHub</h1>
+      <div>
+        <a href="/logout" class="logout-link" aria-label="Sign out of your account">
+          Logout
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main>
+    <!-- Welcome Section -->
+    <section class="section" aria-labelledby="welcome-heading">
+      <h2 id="welcome-heading">Welcome back, <%= name %>! 👋</h2>
+    </section>
+
+    <!-- Statistics Dashboard -->
+    <section class="stats" aria-labelledby="stats-heading">
+      <h2 id="stats-heading" class="sr-only">Your Study Statistics</h2>
+      
+      <div class="stat" role="group" aria-labelledby="focus-goal">
+        <span role="img" aria-label="Fire emoji">🔥</span>
+        <div>
+          <p id="focus-goal">Daily Focus Goal</p>
+          <p><%= focusedTime %></p>
+        </div>
+      </div>
+
+      <div class="stat" role="group" aria-labelledby="current-streak">
+        <span role="img" aria-label="Trophy emoji">🏆</span>
+        <div>
+          <p id="current-streak">Current Streak</p>
+          <p><%= streak_count %> days</p>
+        </div>
+      </div>
+
+      <div class="stat" role="group" aria-labelledby="longest-streak">
+        <span role="img" aria-label="Chart emoji">📈</span>
+        <div>
+          <p id="longest-streak">Longest Streak</p>
+          <p><%= longest_streak %> days</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Schedule Section -->
+    <section class="section" aria-labelledby="schedule-heading">
+      <h3 id="schedule-heading">Your Personalized Schedule</h3>
+      
+      <% if (scheduleItems && scheduleItems.length > 0) { %>
+        <div class="table-container">
+          <table class="schedule-table" role="table" aria-label="Weekly study schedule">
+            <thead>
+              <tr>
+                <th scope="col">Day</th>
+                <th scope="col">Start Time</th>
+                <th scope="col">End Time</th>
+                <th scope="col">Subject / Task</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% scheduleItems.forEach((item, index) => { %>
+                <tr>
+                  <td><%= item.day_of_week %></td>
+                  <td><time><%= item.start_time %></time></td>
+                  <td><time><%= item.end_time %></time></td>
+                  <td><%= item.subject %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } else { %>
+        <div class="no-schedule" role="region" aria-labelledby="empty-schedule">
+          <p id="empty-schedule">Your schedule is empty.</p>
+          <a href="/form" class="add-button" aria-describedby="empty-schedule">
+            Create Your Schedule Now
+          </a>
+        </div>
+      <% } %>
+      
+      <div style="margin-top: 20px;">
+        <a href="/form" class="add-button">
+          ＋ Generate a New/Updated Schedule
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer with Insights -->
+  <footer class="footer" role="contentinfo">
+    <h3>Insights</h3>
+    <div class="tips" role="region" aria-label="Study insights and tips">
+      <p><%= insight %></p>
+    </div>
+  </footer>
+
+  <!-- Screen Reader Only Styles -->
+  <style>
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</body>
+</html>

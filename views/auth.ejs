@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyHub</title>
+  <link rel="stylesheet" href="/authstyle.css" />
+  <script src="https://kit.fontawesome.com/4d3f4cb4b5.js" crossorigin="anonymous"></script>
+  <style>
+    /* Simple style for showing error messages */
+    .error-message {
+        color: #ff3b30;
+        text-align: center;
+        height: 1.2em;
+        font-size: 0.9em;
+        font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+
+    <!-- 🔐 Sign Up Form -->
+    <div class="form-container Sign-Up">
+      <!-- FIX: Removed action/method, added an ID -->
+      <form id="registerForm">
+        <h1>Create Account</h1>
+        <div class="social-icons">
+          <!-- Social icons... -->
+        </div>
+        <span>or use your email for registration</span>
+        <!-- FIX: Added IDs to inputs for JavaScript -->
+        <input type="text" id="registerName" name="name" placeholder="Name" required />
+        <input type="email" id="registerEmail" name="email" placeholder="Email" required />
+        <input type="password" id="registerPassword" name="password" placeholder="Password" required />
+        <!-- FIX: Added a space for error messages -->
+        <p id="registerError" class="error-message"></p>
+        <button type="submit">Sign Up</button>
+      </form>
+    </div>
+
+    <!-- 🔑 Sign In Form -->
+    <div class="form-container Sign-In">
+      <!-- FIX: Removed action/method, added an ID -->
+      <form id="loginForm">
+        <h1>Sign In</h1>
+        <div class="social-icons">
+          <!-- Social icons... -->
+        </div>
+        <span>Use your email and password</span>
+        <!-- FIX: Added IDs to inputs for JavaScript -->
+        <input type="email" id="loginEmail" name="email" placeholder="Email" required />
+        <input type="password" id="loginPassword" name="password" placeholder="Password" required />
+        <a href="#">Forgot your Password?</a>
+        <!-- FIX: Added a space for error messages -->
+        <p id="loginError" class="error-message"></p>
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+
+    <!-- Toggle Panels (no changes needed here) -->
+    <div class="toggle-container">
+       <!-- ... your toggle HTML ... -->
+    </div>
+
+  </div>
+  <script src="/authjavas.js"></script>
+
+  <!-- =================================================================== -->
+  <!-- ============ THE JAVASCRIPT LOGIC THAT FIXES THE PROBLEM ========== -->
+  <!-- =================================================================== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const registerForm = document.getElementById('registerForm');
+      const loginForm = document.getElementById('loginForm');
+      const registerError = document.getElementById('registerError');
+      const loginError = document.getElementById('loginError');
+
+      // --- Handle the Registration Form ---
+      registerForm.addEventListener('submit', async (event) => {
+        // 1. Prevent the browser's default (and wrong) submission behavior
+        event.preventDefault(); 
+        registerError.textContent = ''; // Clear old errors
+
+        // 2. Grab the data from the form fields
+        const name = document.getElementById('registerName').value;
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
+
+        // 3. Send the data to the server using the Fetch API (the modern way)
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password }),
+        });
+
+        // 4. Wait for the server's JSON response and parse it
+        const data = await response.json();
+
+        // 5. Check the 'success' flag from the server and act on it
+        if (data.success) {
+            // SUCCESS! Now we manually redirect the browser using the URL from the server
+            window.location.href = data.redirectTo; 
+        } else {
+            // ERROR! Display the error message from the server
+            registerError.textContent = data.message;
+        }
+      });
+
+      // --- Handle the Login Form (identical logic) ---
+      loginForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        loginError.textContent = '';
+
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            window.location.href = data.redirectTo;
+        } else {
+            loginError.textContent = data.message;
+        }
+      });
+    });
+  </script>
+</body>
+</html>
