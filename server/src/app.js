@@ -14,12 +14,12 @@ const insightRoutes = require("./routes/insightRoutes");
 
 const app = express();
 
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true
-  })
-);
+const corsOptions = { credentials: true };
+if (process.env.CLIENT_URL) {
+  corsOptions.origin = process.env.CLIENT_URL;
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan("dev"));

@@ -21,7 +21,6 @@ A fully featured Smart Study Scheduler built with:
 
 1. Install dependencies:
 ```bash
-cd mern_smart_study_scheduler
 npm run install:all
 ```
 
