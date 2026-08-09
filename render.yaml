@@ -5,7 +5,7 @@ services:
     plan: free
     region: oregon
     rootDir: server
-    buildCommand: npm install
+    buildCommand: yarn install
     startCommand: yarn start
     healthCheckPath: /api/health
     envVars:

@@ -1,6 +1,7 @@
 {
   "name": "smart-study-scheduler-server",
   "version": "1.0.0",
+  "packageManager": "yarn@1.22.22",
   "description": "Backend API for Smart Study Scheduler",
   "main": "src/server.js",
   "scripts": {
