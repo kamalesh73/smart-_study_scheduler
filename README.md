@@ -51,13 +51,20 @@ npm run dev
 
 ## Deploying to Vercel
 
-This repo is a monorepo with `server/` and `client/` packages. Vercel should deploy only the `client` frontend package because the Express backend is not configured as Vercel serverless functions.
+This repo is a monorepo with `server/` and `client/` packages. It now supports full-stack deployment on Vercel:
 
 1. Add `vercel.json` at the repository root.
-2. Set the Vercel project root to the repository root and let Vercel detect `client/package.json` via `vercel.json`.
-3. Ensure the build command runs from `client/package.json` and the static output directory is `dist`.
+2. Set the Vercel project root to the repository root.
+3. Vercel will build the React frontend from `client/package.json` and deploy the Express backend as a serverless function from `server/api/index.js`.
+4. Set the following environment variables in your Vercel project:
+   - `MONGODB_URI` — your MongoDB connection string
+   - `JWT_SECRET` — a secure JWT secret
+   - `CLIENT_URL` — the production frontend URL (for CORS)
+   - `VITE_API_URL` — `/api`
 
-If you want to deploy the backend too, host the Express server separately and point the frontend to that API URL.
+The backend API will be available at `/api` on the same Vercel deployment.
+
+If you prefer to host the API separately, set `VITE_API_URL` to the full backend URL instead.
 
 ## API Overview
 - `POST /api/auth/register`
