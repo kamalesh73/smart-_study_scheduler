@@ -1,11 +1,13 @@
 {
   "name": "smart-study-scheduler-server",
   "version": "1.0.0",
+  "packageManager": "yarn@1.22.22",
   "description": "Backend API for Smart Study Scheduler",
   "main": "src/server.js",
   "scripts": {
     "dev": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "build": "echo \"No build step required\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

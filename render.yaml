@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: smart-study-scheduler-api
+    env: node
+    plan: free
+    region: oregon
+    rootDir: server
+    buildCommand: yarn build
+    startCommand: yarn start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
