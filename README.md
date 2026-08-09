@@ -50,6 +50,16 @@ cd ../client
 npm run dev
 ```
 
+## Deploying to Vercel
+
+This repo is a monorepo with `server/` and `client/` packages. Vercel should deploy only the `client` frontend package because the Express backend is not configured as Vercel serverless functions.
+
+1. Add `vercel.json` at the repository root.
+2. Set the Vercel project root to the repository root and let Vercel detect `client/package.json` via `vercel.json`.
+3. Ensure the build command runs from `client/package.json` and the static output directory is `dist`.
+
+If you want to deploy the backend too, host the Express server separately and point the frontend to that API URL.
+
 ## API Overview
 - `POST /api/auth/register`
 - `POST /api/auth/login`
